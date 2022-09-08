@@ -99,7 +99,6 @@ def shortest_path(source, target):
     start = Node(state=source, parent=None, action=None)
     frontier = QueueFrontier()
     frontier.add(start)
-    print(frontier.frontier)
 
     # Initialize an empty explored set
     explored = set()
@@ -120,13 +119,16 @@ def shortest_path(source, target):
             # TODO return solution
             actions = []
             cells = []
+            i = int(0)
             while node.parent is not None:
                 actions.append(node.action)
                 cells.append(node.state)
                 node = node.parent
             actions.reverse()
             cells.reverse()
-            solution = (actions, cells)
+            buffer = zip(actions, cells)
+            solution = list(buffer)
+
             return solution
 
         # Mark node as explored
