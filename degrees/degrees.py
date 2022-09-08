@@ -91,8 +91,35 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
-
     # TODO
+    # Keep track of number of states explored
+    num_explored = 0
+
+    # Initialize frontier to just the starting position
+    start = Node(state=source, parent=None, action=None)
+    frontier = QueueFrontier()
+    frontier.add(start)
+
+    # Initialize an empty explored set
+    explored = set()
+
+    # Keep looping until solution found
+    while True:
+        # If nothing left in frontier, then no path
+        if frontier.empty():
+            raise Exception("no solution")
+
+        # choose a node from frontier
+        node = frontier.remove()
+        num_explored += 1
+
+        # If node is the goal, then we have a solution
+        if node.state == target:
+            # TODO
+            print("TODO")
+
+        
+
     raise NotImplementedError
 
 
