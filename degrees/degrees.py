@@ -115,10 +115,17 @@ def shortest_path(source, target):
 
         # If node is the goal, then we have a solution
         if node.state == target:
-            # TODO
+            # TODO print solution
             print("TODO")
 
-        
+            # Mark node as explored
+            explored.add(node.state)
+
+            # Add neighbors to frontier
+            for action, state in neighbors_for_person(node.state):
+                if not frontier.contains_state(state) and state not in self.explored:
+                    child = Node(state=state, parent=node, action=action)
+                    frontier.add(child)
 
     raise NotImplementedError
 
