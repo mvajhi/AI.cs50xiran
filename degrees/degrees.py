@@ -99,6 +99,7 @@ def shortest_path(source, target):
     start = Node(state=source, parent=None, action=None)
     frontier = QueueFrontier()
     frontier.add(start)
+    print(frontier.frontier)
 
     # Initialize an empty explored set
     explored = set()
@@ -112,20 +113,30 @@ def shortest_path(source, target):
         # choose a node from frontier
         node = frontier.remove()
         num_explored += 1
+        # print(num_explored)
 
         # If node is the goal, then we have a solution
         if node.state == target:
-            # TODO print solution
-            print("TODO")
+            # TODO return solution
+            actions = []
+            cells = []
+            while node.parent is not None:
+                actions.append(node.action)
+                cells.append(node.state)
+                node = node.parent
+            actions.reverse()
+            cells.reverse()
+            solution = (actions, cells)
+            return solution
 
-            # Mark node as explored
-            explored.add(node.state)
+        # Mark node as explored
+        explored.add(node.state)
 
-            # Add neighbors to frontier
-            for action, state in neighbors_for_person(node.state):
-                if not frontier.contains_state(state) and state not in explored:
-                    child = Node(state=state, parent=node, action=action)
-                    frontier.add(child)
+        # Add neighbors to frontier
+        for action, state in neighbors_for_person(node.state):
+            if not frontier.contains_state(state) and state not in explored:
+                child = Node(state=state, parent=node, action=action)
+                frontier.add(child)
 
     raise NotImplementedError
 
