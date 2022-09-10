@@ -9,7 +9,6 @@ X = "X"
 O = "O"
 EMPTY = None
 
-round = int(0)
 turn = ""
 
 
@@ -26,14 +25,22 @@ def player(board):
     """
     Returns player who has the next turn on a board.
     """
-    round += 1
+    num_X = int(0)
+    num_O = int(0)
+    
+    # count X & O
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == X:
+                num_X += 1
+            elif board[i][j] == O:
+                num_O += 1
 
-    if (round % 2) == 1:
-        turn = X
+    if num_X >= num_O:
         return X
-    if (round % 2) == 0:
-        turn = O
+    else:
         return O
+
 
     raise NotImplementedError
 
@@ -75,6 +82,10 @@ def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
+
+
+    return None
+
     raise NotImplementedError
 
 
