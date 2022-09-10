@@ -2,6 +2,7 @@
 Tic Tac Toe Player
 """
 
+import copy
 import math
 
 X = "X"
@@ -60,9 +61,12 @@ def result(board, action):
     if not action in actions(board):
         raise Exception("impassible action")
 
-    board[action[0]][action[1]] = turn
+    new_board = copy.deepcopy(board)
+    
 
-    return board
+    new_board[action[0]][action[1]] = turn
+
+    return new_board
 
     raise NotImplementedError
 
