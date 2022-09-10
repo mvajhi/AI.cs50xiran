@@ -127,6 +127,14 @@ def terminal(board):
 
     raise NotImplementedError
 
+def check_full_fill(board):
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == EMPTY:
+                    return False
+
+    return True
+    raise NotImplementedError
 
 def utility(board):
     """
@@ -140,7 +148,7 @@ def utility(board):
         return -1
     elif check_full_fill:
         return 0
-        
+
     raise NotImplementedError
 
 
@@ -148,13 +156,25 @@ def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
+    if terminal(board):
+        return None
+
+    if player(board) == X:
+        return max(board)
+    else:
+        return min(board)
+        
     raise NotImplementedError
 
-def check_full_fill(board):
-    for i in range(3):
-        for j in range(3):
-            if board[i][j] == EMPTY:
-                    return False
+def max(board):
+    for (i, j) in actions(board):
+        new_board = result(board , (i, j))
+        if terminal(new_board):
+            game_result = utility(new_board)
+            return [new_board, (i, j)]
+        else:
+            
+    return "hi"
 
-    return True
-    raise NotImplementedError
+def min(board):
+    return "hi"
