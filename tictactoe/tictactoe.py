@@ -5,6 +5,7 @@ Tic Tac Toe Player
 from cmath import inf
 import copy
 import math
+from queue import Empty
 
 X = "X"
 O = "O"
@@ -35,7 +36,7 @@ def player(board):
             elif board[i][j] == O:
                 num_O += 1
 
-    if num_X >= num_O:
+    if num_X <= num_O:
         return X
     else:
         return O
@@ -105,7 +106,7 @@ def winner(board):
         elif counter_O == 3:
             return O
 
-    if board[0][0] == board[1][1] == board[2][2] or board[0][2] == board[1][1] == board[0][2]:
+    if (board[0][0] == board[1][1] and board[1][1] == board[2][2]) or (board[0][2] == board[1][1] and board[1][1] == board[2][0]):
         return board[1][1]
 
     return None
@@ -117,22 +118,16 @@ def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-
-    if winner(board) == None and not check_full_fill:
-        return False
-    else:
+    if winner(board) != None:
         return True
 
-    raise NotImplementedError
-
-
-def check_full_fill(board):
     for i in range(3):
         for j in range(3):
-            if board[i][j] == EMPTY:
+            if  board[i][j] == None:
                 return False
 
     return True
+
     raise NotImplementedError
 
 
@@ -146,7 +141,7 @@ def utility(board):
         return 1
     elif result == O:
         return -1
-    elif check_full_fill:
+    else:
         return 0
 
     raise NotImplementedError
@@ -170,7 +165,7 @@ def minimax(board):
 def max_value(board):
 
     if terminal(board):
-        return utility(board)
+        return (utility(board), (0, 0))
 
     v = float(-inf)
     best_action = (0, 0)
@@ -193,7 +188,7 @@ def max_value(board):
 def min_value(board):
 
     if terminal(board):
-        return utility(board)
+        return (utility(board), (0, 0))
 
     v = float(inf)
     best_action = (0, 0)
