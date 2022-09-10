@@ -81,7 +81,34 @@ def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
+    for i in range(3):
+        counter_X = int(0)
+        counter_O = int(0)
+        for j in range(3):
+            if board[i][j] == X:
+                counter_X += 1
+            elif board[i][j] == O:
+                counter_O += 1
+        if counter_X == 3:
+            return X
+        elif counter_O == 3:
+            return O
 
+    for j in range(3):
+        counter_X = int(0)
+        counter_O = int(0)
+        for i in range(3):
+            if board[i][j] == X:
+                counter_X += 1
+            elif board[i][j] == O:
+                counter_O += 1
+        if counter_X == 3:
+            return X
+        elif counter_O == 3:
+            return O
+    
+    if board[0][0] == board[1][1] == board[2][2] or board[0][2] == board[1][1] == board[0][2]:
+        return board[1][1]
 
     return None
 
