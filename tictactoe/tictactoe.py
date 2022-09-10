@@ -132,6 +132,15 @@ def utility(board):
     """
     Returns 1 if X has won the game, -1 if O has won, 0 otherwise.
     """
+    result = winner(board)
+
+    if result == X:
+        return 1
+    elif result == O:
+        return -1
+    elif check_full_fill:
+        return 0
+        
     raise NotImplementedError
 
 
@@ -148,3 +157,4 @@ def check_full_fill(board):
                     return False
 
     return True
+    raise NotImplementedError
