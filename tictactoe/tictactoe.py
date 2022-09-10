@@ -119,13 +119,8 @@ def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    counter = int(0)
-    for i in range(3):
-        for j in range(3):
-            if board[i][j] == EMPTY:
-                counter += 1
 
-    if winner(board) == None and counter == 0:
+    if winner(board) == None and not check_full_fill:
         return False
     else:
         return True
@@ -145,3 +140,11 @@ def minimax(board):
     Returns the optimal action for the current player on the board.
     """
     raise NotImplementedError
+
+def check_full_fill(board):
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == EMPTY:
+                    return False
+
+    return True
