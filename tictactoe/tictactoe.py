@@ -2,13 +2,13 @@
 Tic Tac Toe Player
 """
 
+from cmath import inf
 import copy
 import math
 
 X = "X"
 O = "O"
 EMPTY = None
-
 
 
 def initial_state():
@@ -26,7 +26,7 @@ def player(board):
     """
     num_X = int(0)
     num_O = int(0)
-    
+
     # count X & O
     for i in range(3):
         for j in range(3):
@@ -39,7 +39,6 @@ def player(board):
         return X
     else:
         return O
-
 
     raise NotImplementedError
 
@@ -68,7 +67,6 @@ def result(board, action):
         raise Exception("impassible action")
 
     new_board = copy.deepcopy(board)
-    
 
     new_board[action[0]][action[1]] = player(board)
 
@@ -106,7 +104,7 @@ def winner(board):
             return X
         elif counter_O == 3:
             return O
-    
+
     if board[0][0] == board[1][1] == board[2][2] or board[0][2] == board[1][1] == board[0][2]:
         return board[1][1]
 
@@ -127,14 +125,16 @@ def terminal(board):
 
     raise NotImplementedError
 
+
 def check_full_fill(board):
     for i in range(3):
         for j in range(3):
             if board[i][j] == EMPTY:
-                    return False
+                return False
 
     return True
     raise NotImplementedError
+
 
 def utility(board):
     """
@@ -160,21 +160,54 @@ def minimax(board):
         return None
 
     if player(board) == X:
-        return max(board)
+        return max_value(board)[1]
     else:
-        return min(board)
-        
+        return min_value(board)[1]
+
     raise NotImplementedError
 
-def max(board):
-    for (i, j) in actions(board):
-        new_board = result(board , (i, j))
-        if terminal(new_board):
-            game_result = utility(new_board)
-            return [new_board, (i, j)]
-        else:
-            
-    return "hi"
 
-def min(board):
-    return "hi"
+def max_value(board):
+
+    if terminal(board):
+        return utility(board)
+
+    v = float(-inf)
+    best_action = (0, 0)
+
+    for action in actions(board):
+
+        buffer_result = min_value(result(board, action))[0]
+
+        if v < buffer_result:
+            v = buffer_result
+            best_action = action
+
+        # best choice
+        if v == 1:
+            return (v, best_action)
+
+    return (v, best_action)
+
+
+def min_value(board):
+
+    if terminal(board):
+        return utility(board)
+
+    v = float(inf)
+    best_action = (0, 0)
+
+    for action in actions(board):
+
+        buffer_result = max_value(result(board, action))[0]
+
+        if v > buffer_result:
+            v = buffer_result
+            best_action = action
+
+        # best choice
+        if v == -1:
+            return (v, best_action)
+
+    return (v, best_action)
