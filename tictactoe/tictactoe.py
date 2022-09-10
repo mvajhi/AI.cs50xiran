@@ -119,11 +119,17 @@ def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    if winner(board) == None:
+    counter = int(0)
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == EMPTY:
+                counter += 1
+
+    if winner(board) == None and counter == 0:
         return False
     else:
         return True
-        
+
     raise NotImplementedError
 
 
