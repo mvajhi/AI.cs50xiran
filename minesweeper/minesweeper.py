@@ -105,12 +105,16 @@ class Sentence():
         """
         Returns the set of all cells in self.cells known to be mines.
         """
+        if len(self.cells) == self.count:
+            return self.cells
         raise NotImplementedError
 
     def known_safes(self):
         """
         Returns the set of all cells in self.cells known to be safe.
         """
+        if self.count == 0:
+            return self.cells
         raise NotImplementedError
 
     def mark_mine(self, cell):
@@ -118,6 +122,9 @@ class Sentence():
         Updates internal knowledge representation given the fact that
         a cell is known to be a mine.
         """
+        if cell in self.cells:
+            self.cells.remove(cell)
+            self.count -= 1
         raise NotImplementedError
 
     def mark_safe(self, cell):
@@ -125,6 +132,8 @@ class Sentence():
         Updates internal knowledge representation given the fact that
         a cell is known to be safe.
         """
+        if cell in self.cells:
+            self.cells.remove(cell)
         raise NotImplementedError
 
 
@@ -182,7 +191,48 @@ class MinesweeperAI():
             5) add any new sentences to the AI's knowledge base
                if they can be inferred from existing knowledge
         """
+        # 1
+        self.moves_made.add(cell)
+        # 2
+        self.mark_safe(cell)
+        # 3
+        neighbours = set()
+        for i in {-1,0,1}:
+            for j in {-1,0,1}:
+                if not(cell[0] + i < 0 or cell[1] + j < 0 or abs(i) + abs(j) == 0):
+                    neighbours.add((cell[0] + i, cell[1] + j))
+        neighbours.pop((cell[0], cell[1]))
+        new_sentence = Sentence(neighbours, count)
+        self.knowledge.append(new_sentence)
+
+        #4
+        for sentence in self.knowledge:
+            safe_cell = sentence.known_safes()
+            mine_cell = sentence.known_mines()
+            for cell in safe_cell:
+                self.mark_safe(cell)
+            for cell in mine_cell:
+                self.mark_mine(cell)
+
+        #5
+        for set1 in self.knowledge:
+            for set2 in self.knowledge:
+                if len(set1.cells - set2.cells) == 0 or len(set1.cells) == 0 or len(set2.cells) == 0 or set2.count == 0:
+                    continue
+                elif self.subset(set1, set2):
+                    new_cells = set2.cells - set1.cells
+                    new_count = set2.count - set1.count
+                    new_sentence = Sentence(new_cells, new_count)
+                    self.knowledge.append(new_sentence)
+                    
+
         raise NotImplementedError
+    
+    def subset(subset, set):
+        for i in subset.cells:
+            if not i in set.cells:
+                return False
+        return True
 
     def make_safe_move(self):
         """
